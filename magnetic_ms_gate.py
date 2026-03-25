@@ -30,7 +30,7 @@ The effective spin-motion coupling Hamiltonian in the doubly-rotating frame is
 where
 
     Ω_eff = η Ω_R            effective coupling rate
-    η     = (g_s μ_B / ħ) × (∂B/∂x) × x_zpf / ω_m   (dimensionless)
+    η     = (g_s μ_B / ħ) × (∂B/∂z) × x_zpf / ω_m   (dimensionless)
     δ                        drive detuning from the motional sideband
 
 After one gate time  T_gate = 2π / |δ|  the motional mode returns to its
@@ -216,12 +216,12 @@ class IonParameters:
     def lamb_dicke_parameter(self, gradient: float) -> float:
         r"""Compute the effective Lamb-Dicke-like parameter η.
 
-            η = (g_s μ_B / ħ) × |∂B/∂x| × x_zpf / ω_m
+            η = (g_s μ_B / ħ) × |∂B/∂z| × x_zpf / ω_m
 
         Parameters
         ----------
         gradient :
-            Magnetic field gradient ∂B_z/∂x (T m⁻¹).
+            Magnetic field gradient ∂B/∂z (T m⁻¹).
 
         Returns
         -------
@@ -487,7 +487,7 @@ def run_simulation(
 
     Steps
     -----
-    1. Compute ∂B/∂x from the wire geometry.
+    1. Compute ∂B/∂z from the wire geometry.
     2. Build the QuTiP time-dependent Hamiltonian.
     3. Prepare the initial state (pure ground state or thermal motional state).
     4. Integrate forward in time using ``sesolve`` (no decoherence) or
@@ -507,7 +507,7 @@ def run_simulation(
         ``"populations"``  – 2-D array [time, state_index] of spin pops
         ``"basis_labels"`` – list of 4 state label strings
         ``"fidelity"``     – gate fidelity (float in [0, 1])
-        ``"gradient"``     – ∂B/∂x (T m⁻¹)
+        ``"gradient"``     – ∂B/∂z (T m⁻¹)
         ``"eta"``          – Lamb-Dicke parameter (dimensionless)
         ``"Omega_eff"``    – effective coupling rate (rad s⁻¹)
         ``"gate_time"``    – T_gate = 2π / |δ| (s)
@@ -865,7 +865,7 @@ class MagneticMSGateGUI:
         grad = res["gradient"]
         eta  = res["eta"]
         text = (
-            f"∂B/∂x  = {grad:.3e} T m⁻¹\n"
+            f"∂B/∂z  = {grad:.3e} T m⁻¹\n"
             f"η      = {eta:.4f}\n"
             f"Ω_eff  = {res['Omega_eff'] / (2e3*np.pi):.3f} kHz\n"
             f"T_gate = {res['gate_time']*1e6:.2f} µs\n"
